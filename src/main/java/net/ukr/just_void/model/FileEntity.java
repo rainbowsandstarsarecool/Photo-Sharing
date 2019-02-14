@@ -70,9 +70,7 @@ public class FileEntity {
         if (this == o) return true;
         if (!(o instanceof FileEntity)) return false;
         FileEntity that = (FileEntity) o;
-        return id == that.id &&
-                Objects.equals(date, that.date) &&
-                Arrays.equals(fileData, that.fileData);
+        return hash == that.hash;
     }
 
     @Override

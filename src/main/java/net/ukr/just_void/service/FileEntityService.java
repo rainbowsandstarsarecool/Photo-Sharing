@@ -1,5 +1,7 @@
-package net.ukr.just_void;
+package net.ukr.just_void.service;
 
+import net.ukr.just_void.dao.FileEntityDAO;
+import net.ukr.just_void.model.FileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

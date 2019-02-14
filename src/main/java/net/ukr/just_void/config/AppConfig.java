@@ -1,4 +1,4 @@
-package net.ukr.just_void;
+package net.ukr.just_void.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +19,9 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:config.properties")
-@EnableTransactionManagement
 @EnableWebMvc
+@EnableTransactionManagement
+@PropertySource("classpath:hibernate.properties")
 public class AppConfig {
     @Value("${hibernate.dialect}")
     private String sqlDialect;

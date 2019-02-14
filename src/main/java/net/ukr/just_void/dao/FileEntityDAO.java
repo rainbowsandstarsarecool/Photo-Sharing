@@ -1,5 +1,6 @@
-package net.ukr.just_void;
+package net.ukr.just_void.dao;
 
+import net.ukr.just_void.model.FileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,5 +1,9 @@
-package net.ukr.just_void;
+package net.ukr.just_void.controllers;
 
+import net.ukr.just_void.exception.UploadedFileInvalidException;
+import net.ukr.just_void.exception.UploadedFileNotFoundException;
+import net.ukr.just_void.model.FileEntity;
+import net.ukr.just_void.service.FileEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,12 +50,11 @@ public class PhotoSharingController {
         }
         try {
             FileEntity fileEntity = new FileEntity(new Date(), file.getBytes());
-            int hashId = fileEntity.hashCode();
             fileEntityService.addFileEntity(fileEntity);
-            model.addAttribute("hash_id", Integer.toHexString(hashId));
+            model.addAttribute("hash_id", Integer.toHexString(fileEntity.getHash()));
             return "view";
         } catch (IOException e) {
-            throw new FileInvalidException();
+            throw new UploadedFileInvalidException();
         }
     }
 
@@ -75,10 +78,11 @@ public class PhotoSharingController {
 
     @RequestMapping("/delete/{hash_id}")
     public String onDelete(@PathVariable("hash_id") String hashId) {
-        if (fileEntityService.deleteByHashId(hexStringToInt(hashId)) == false)
-            throw new FileNotFoundException();
-        else
+        if (fileEntityService.deleteByHashId(hexStringToInt(hashId)) == false) {
+            throw new UploadedFileNotFoundException();
+        } else {
             return "index";
+        }
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -93,12 +97,11 @@ public class PhotoSharingController {
 
     private ResponseEntity<byte[]> getFileByHash(int hashId) {
         byte[] bytes = fileEntityService.getByHashId(hashId).getFileData();
-        if (bytes == null)
-            throw new FileNotFoundException();
-
+        if (bytes == null) {
+            throw new UploadedFileNotFoundException();
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
-
         return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
     }
 

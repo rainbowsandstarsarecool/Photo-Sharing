@@ -1,4 +1,4 @@
-package net.ukr.just_void;
+package net.ukr.just_void.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -15,7 +15,8 @@ public class WebInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
         ctx.register(AppConfig.class);
         ctx.setServletContext(servletContext);
-        ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcherServlet", new DispatcherServlet(ctx));
+        ServletRegistration.Dynamic servlet = servletContext.addServlet
+                ("dispatcherServlet", new DispatcherServlet(ctx));
         servlet.addMapping("/");
         servlet.setLoadOnStartup(1);
     }

@@ -1,4 +1,4 @@
-package net.ukr.just_void;
+package net.ukr.just_void.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import java.util.Objects;
 
 @Entity
 public class FileEntity {
-
     @Id
     @GeneratedValue
     private long id;

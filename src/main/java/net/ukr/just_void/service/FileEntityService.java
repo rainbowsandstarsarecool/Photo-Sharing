@@ -41,11 +41,11 @@ public class FileEntityService {
 
     @Transactional
     public boolean deleteByHashId(int hashId) {
-        boolean exists = (fileEntityDAO.existsFileEntityByHashId(hashId));
-        if (exists) {
+        if (fileEntityDAO.existsFileEntityByHashId(hashId)) {
             fileEntityDAO.removeFileEntityByHashEquals(hashId);
+            return true;
         }
-        return exists;
+        return false;
     }
 
 }

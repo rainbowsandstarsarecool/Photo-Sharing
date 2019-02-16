@@ -14,13 +14,13 @@
 <div class="container-fluid">
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item">
-            <a class="nav-link" href="/">Upload photo</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/">Upload photo</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="#">View photo</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/list">List all photos</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/list">List all photos</a>
         </li>
     </ul>
 </div>
@@ -34,7 +34,7 @@
 <div class="container text-center">
 
     <div class="jumbotron text-center">
-        <form action="/view_file" method="POST">
+        <form action="${pageContext.request.contextPath}/view_file" method="POST">
             <div class="row">
                 <div class="col">
                 </div>
@@ -50,13 +50,11 @@
 </div>
 <c:if test="${hash_id ne null}">
     <div class="container text-center">
-
         <h4>
             <small>Your file hash id is: ${hash_id}</small>
         </h4>
         <input type="submit" value="Delete File" class="btn btn-info" onclick="window.location='/delete/${hash_id}';"/>
         <br/><br/><a href="/file/${hash_id}"><img class="img-fluid" src="/file/${hash_id}"/></a>
-
     </div>
 </c:if>
 </body>

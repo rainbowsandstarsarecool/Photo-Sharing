@@ -16,10 +16,10 @@
             <a class="nav-link active" href="#">Upload photo</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/view_file">View photo</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/view_file">View photo</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/list">List all photos</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/list">List all photos</a>
         </li>
     </ul>
 </div>
@@ -33,14 +33,11 @@
 <div class="container  text-center">
 
     <div class="jumbotron text-center">
-        <form action="/add_file" enctype="multipart/form-data" method="POST">
+        <form action="${pageContext.request.contextPath}/add_file" enctype="multipart/form-data" method="POST">
             <input type="file" name="file" class="btn btn-info">
             <input type="submit" class="btn btn-outline-info "/>
-
         </form>
-
     </div>
-
 </div>
 </body>
 </html>

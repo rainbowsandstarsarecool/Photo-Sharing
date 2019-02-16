@@ -14,10 +14,10 @@
 <div class="container-fluid">
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item">
-            <a class="nav-link" href="/">Upload photo</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/">Upload photo</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/view_file">View photo</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/view_file">View photo</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="#">List all photos</a>
@@ -35,7 +35,7 @@
 
     <div class="jumbotron text-center">
         <c:if test="${photos_key_set ne null}">
-            <form action="/delete" method="POST">
+            <form action="${pageContext.request.contextPath}/delete" method="POST">
 
                 <div class="row">
                     <div class="col-sm-3">
@@ -75,6 +75,5 @@
         </c:if>
     </div>
 </div>
-
 </body>
 </html>

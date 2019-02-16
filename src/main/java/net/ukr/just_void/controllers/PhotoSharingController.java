@@ -59,26 +59,24 @@ public class PhotoSharingController {
     }
 
     @RequestMapping("/view_file")
-    public ModelAndView onViewPage(@RequestParam(value = "hash_id", required = false) String hashId) {
-        if (hashId == null) {
+    public ModelAndView onViewPage(@RequestParam(value = "hash_id", required = false) String stringHexHashId) {
+        if ((stringHexHashId == null) || (stringHexHashId.equals(""))) {
             return new ModelAndView("view");
         }
-        return new ModelAndView("view", "hash_id", hashId);
+        if (!fileEntityService.existsByHashId(stringHexHashIdToIntHashId(stringHexHashId))) {
+            throw new UploadedFileNotFoundException();
+        }
+        return new ModelAndView("view", "hash_id", stringHexHashId);
     }
 
     @RequestMapping("/file/{hash_id}")
-    public ResponseEntity<byte[]> onPhoto(@PathVariable("hash_id") String hashId) {
-        return getFileByHash(hexStringToInt(hashId));
-    }
-
-    @RequestMapping(value = "/view", method = RequestMethod.POST)
-    public ResponseEntity<byte[]> onView(@RequestParam("hash_id") String hashId) {
-        return getFileByHash(hexStringToInt(hashId));
+    public ResponseEntity<byte[]> onPhoto(@PathVariable("hash_id") String stringHexHashId) {
+        return getFileByHash(stringHexHashIdToIntHashId(stringHexHashId));
     }
 
     @RequestMapping("/delete/{hash_id}")
-    public String onDelete(@PathVariable("hash_id") String hashId) {
-        if (fileEntityService.deleteByHashId(hexStringToInt(hashId)) == false) {
+    public String onDelete(@PathVariable("hash_id") String stringHexHashId) {
+        if (!fileEntityService.deleteByHashId(stringHexHashIdToIntHashId(stringHexHashId))) {
             throw new UploadedFileNotFoundException();
         } else {
             return "index";
@@ -86,26 +84,33 @@ public class PhotoSharingController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ModelAndView onDeleteArray(@RequestParam(value = "hash_id", required = false) String[] hashIdArray) {
-        if (hashIdArray != null) {
-            for (String i : hashIdArray) {
-                fileEntityService.deleteByHashId(hexStringToInt(i));
+    public ModelAndView onDeleteArray(@RequestParam(value = "hash_id", required = false) String[] stringHexHashIdArray) {
+        if (stringHexHashIdArray != null) {
+            for (String i : stringHexHashIdArray) {
+                fileEntityService.deleteByHashId(stringHexHashIdToIntHashId(i));
             }
         }
         return onList();
     }
 
     private ResponseEntity<byte[]> getFileByHash(int hashId) {
-        byte[] bytes = fileEntityService.getByHashId(hashId).getFileData();
-        if (bytes == null) {
+        FileEntity fileEntity = fileEntityService.getByHashId(hashId);
+        if (fileEntity == null) {
             throw new UploadedFileNotFoundException();
         }
+        byte[] fileData = fileEntity.getFileData();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
-        return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
     }
 
-    private int hexStringToInt(String hexString) {
-        return (int) Long.parseLong(hexString, 16);
+    private int stringHexHashIdToIntHashId(String stringHexHashId) {
+        int intHashId;
+        try {
+            intHashId = (int) Long.parseLong(stringHexHashId, 16);
+        } catch (NumberFormatException e) {
+            throw new UploadedFileNotFoundException();
+        }
+        return intHashId;
     }
 }

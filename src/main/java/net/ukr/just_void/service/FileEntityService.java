@@ -48,4 +48,8 @@ public class FileEntityService {
         return false;
     }
 
+    @Transactional
+    public boolean existsByHashId(int hashId) {
+        return fileEntityDAO.existsFileEntityByHashId(hashId);
+    }
 }

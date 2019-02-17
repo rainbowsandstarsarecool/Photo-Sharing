@@ -105,12 +105,6 @@ public class PhotoSharingController {
     }
 
     private int stringHexHashIdToIntHashId(String stringHexHashId) {
-        int intHashId;
-        try {
-            intHashId = (int) Long.parseLong(stringHexHashId, 16);
-        } catch (NumberFormatException e) {
-            throw new UploadedFileNotFoundException();
-        }
-        return intHashId;
+        return (int) Long.parseLong(stringHexHashId, 16);
     }
 }
